@@ -7,6 +7,14 @@
 // writeFile('New string2 \n');
 // readFileToConsole();
 
+/*
+ *2. Используя модуль fs, сделать так, чтоб информация в файл дописывалась с новой строки(добавлялась), а не заменялась.
+*/
+
+// readFileToConsole();
+// writeFile('New string3 \n', true);
+// readFileToConsole();
+
 
 //==========================================================================
 function readFileToConsole() {
