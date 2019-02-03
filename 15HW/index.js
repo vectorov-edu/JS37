@@ -7,17 +7,13 @@
 
 const http = require('http');
 const fs = require('fs');
-const stream = require('stream');
 
 http.createServer(function(req, res) {
     if(req.url === '/large') {
         readFileAsStream('large', res);
-    };
-    if(req.url === '/small') {
+    } else if(req.url === '/small') {
         readFile('small', res);
-    };
-    
-    if(req.url === '/file') {
+    } else if(req.url === '/file') {
         fs.stat('15HW/file.txt', function(err, stats) {
             if(stats.size >= 1000) {
                 readFileAsStream('file', res);
@@ -27,6 +23,8 @@ http.createServer(function(req, res) {
                 console.log('as file');
             }
         });
+    } else {
+        res.end();
     };
 }).listen(3000, function(err) {
     console.log('Server are listening');
