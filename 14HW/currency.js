@@ -7,20 +7,32 @@
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
-const url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=3&fbclid=IwAR1kqe805jievnU8CXahPMpgc31pi7lFPvKRxBToxmJjs-ZPPxVuV9K5M5A';
+const urlAPI = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=3&fbclid=IwAR1kqe805jievnU8CXahPMpgc31pi7lFPvKRxBToxmJjs-ZPPxVuV9K5M5A';
 
 
 http.createServer(function(req, resClient) {
-	if(resClient.url === '/') {
+	if(req.url === '/') {
+		console.log('root');
 		resClient.setHeader('content-type', 'text/html');
-		fs.readFile('14HW/currency.html', 'utf8', function(err, data) {
+		fs.createReadStream('14HW/currency.html', 'utf8')
+		.on('error', function(err) {
+			console.log(err);
+		})
+		.on('close', function(err) {
+			console.log(err);
+		})
+		.on('data', function(chunk) {
+			console.log(chunk);
+		})
+		.pipe(resClient, {end: true});
+		/*fs.readFile('14HW/currency.html', 'utf8', function(err, data) {
 			if(err) throw err;
 			resClient.end(data);
-		});
+		});*/
 	}
 
-	if(resClient.url === '/currency') {
-		https.get(url, function(res) {
+	if(req.url === '/currency') {
+		https.get(urlAPI, function(res) {
 			let rawData = '';
 			res.setEncoding('utf8');
 			res.on('data', function(chunk) {
@@ -34,7 +46,7 @@ http.createServer(function(req, resClient) {
 			});
 		});
 	}
-}).listen(3000, function() {
+}).listen(3000, 'localhost', function() {
 });
 
 /*
